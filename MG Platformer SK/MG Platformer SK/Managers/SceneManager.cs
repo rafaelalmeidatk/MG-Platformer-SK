@@ -15,7 +15,7 @@ namespace MG_Platformer_SK.Managers
         // Public variables
 
         public Vector2 WindowSize = new Vector2(720, 480);
-        public Vector2 VirtualSize = new Vector2(360, 240);
+        public Vector2 VirtualSize = new Vector2(720, 480);
         public GraphicsDevice GraphicsDevice;
         public SpriteBatch SpriteBatch;
         public ViewportAdapter ViewportAdapter { get { return GameMain.ViewportAdapter; } }
@@ -54,7 +54,7 @@ namespace MG_Platformer_SK.Managers
         //--------------------------------------------------
         // Debug mode
 
-        public bool DebugMode = true;
+        public bool DebugMode { get; set; } = false;
 
         //----------------------//------------------------//
 
