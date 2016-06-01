@@ -73,3 +73,8 @@
 /processorParam:TextureFormat=Color
 /build:imgs/characters/Player.png
 
+#begin maps/map2.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:maps/map2.tmx
+

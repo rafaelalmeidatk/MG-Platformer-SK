@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
 using MG_Platformer_SK.Characters;
+using Microsoft.Xna.Framework.Input;
 
 namespace MG_Platformer_SK.Scenes
 {
@@ -51,12 +52,22 @@ namespace MG_Platformer_SK.Scenes
             _rand = new Random();
 
             // Load the map
-            LoadMap(MapManager.Instance.MapToLoad);
+            LoadMap(MapManager.FirstMap);
         }
 
         private void LoadMap(int mapId)
         {
             MapManager.Instance.LoadMap(Content, mapId);
+            InitMapObjects();
+        }
+
+        private void MapLoadedFromTransition(int mapId)
+        {
+            InitMapObjects();
+        }
+
+        private void InitMapObjects()
+        {
             SpawnPlayer();
         }
 
@@ -71,6 +82,13 @@ namespace MG_Platformer_SK.Scenes
             _player.Update(gameTime);
             UpdateCamera();
             base.Update(gameTime);
+
+            if (InputManager.Instace.KeyPressed(Keys.M))
+            {
+                MapManager.Instance.LoadMapWithTransition(2, MapLoadedFromTransition);
+            }
+
+            DebugValues["Delta Time"] = gameTime.ElapsedGameTime.TotalMilliseconds.ToString();
         }
 
         private void UpdateCamera()

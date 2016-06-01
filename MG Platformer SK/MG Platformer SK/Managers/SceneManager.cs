@@ -1,11 +1,12 @@
-﻿using MG_Platformer_SK.Scenes;
+﻿using System;
+
+using MG_Platformer_SK.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.ViewportAdapters;
-using System;
 
 namespace MG_Platformer_SK.Managers
 {
@@ -50,6 +51,13 @@ namespace MG_Platformer_SK.Managers
         private bool _isTransitioning = false;
         public bool IsTransitioning { get { return _isTransitioning; } }
         private bool _beginTransitionFade = false;
+
+        //--------------------------------------------------
+        // Map transitions
+
+        private int? _mapToLoad;
+        private bool _mapTransition = false;
+        private Action<int> _mapLoadCallback;
 
         //--------------------------------------------------
         // Debug mode
@@ -105,14 +113,28 @@ namespace MG_Platformer_SK.Managers
             _currentScene.Draw(spriteBatch, ViewportAdapter);
             spriteBatch.Begin();
             spriteBatch.Draw(_transitionImage.TextureRegion.Texture, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White * _transitionImage.Alpha);
+            _currentScene.DrawDebugValues(spriteBatch);
             spriteBatch.End();
-            _currentScene.DrawDebugValue(spriteBatch);
         }
 
         public void ChangeScene(string newScene)
         {
             if (_isTransitioning) return;
-            _newScene = (SceneBase)Activator.CreateInstance(Type.GetType("Super_Pete_The_Pirate.Scenes." + newScene));
+            _newScene = (SceneBase)Activator.CreateInstance(Type.GetType("MG_Platformer_SK.Scenes." + newScene));
+            InitializeTransition();
+        }
+
+        public void MapTransition(int mapId, Action<int> loadCallback = null)
+        {
+            if (_isTransitioning) return;
+            _mapTransition = true;
+            _mapToLoad = mapId;
+            _mapLoadCallback = loadCallback;
+            InitializeTransition();
+        }
+
+        private void InitializeTransition()
+        {
             _transitionImage.Alpha = 0;
             _transitionImage.IsVisible = true;
             _isTransitioning = true;
@@ -121,17 +143,30 @@ namespace MG_Platformer_SK.Managers
 
         private void UpdateTransition(GameTime gameTime)
         {
-            var dt = gameTime.ElapsedGameTime.TotalMilliseconds;
+            var deltaTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             if (_beginTransitionFade)
             {
                 if (_transitionImage.Alpha < 1.0f)
-                    _transitionImage.Alpha += 0.1f;
+                    _transitionImage.Alpha += deltaTime / 200f;
                 else
                     _beginTransitionFade = false;
             }
             else
             {
-                if (_newScene != null)
+                if (_mapTransition && _mapToLoad != null)
+                {
+                    var mapId = _mapToLoad ?? MapManager.FirstMap;
+                    MapManager.Instance.LoadMap(Content, mapId);
+                    if (_mapLoadCallback != null)
+                    {
+                        _mapLoadCallback(mapId);
+                        _mapLoadCallback = null;
+                    }
+                    _mapToLoad = null;
+                    _mapTransition = false;
+                }
+
+                if (!_mapTransition && _newScene != null)
                 {
                     _currentScene.UnloadContent();
                     _currentScene = _newScene;
@@ -140,7 +175,9 @@ namespace MG_Platformer_SK.Managers
                 }
 
                 if (_transitionImage.Alpha > 0.0f)
-                    _transitionImage.Alpha -= 0.1f;
+                {
+                    _transitionImage.Alpha -= deltaTime / 200f;
+                }
                 else
                 {
                     _transitionImage.IsVisible = false;

@@ -46,9 +46,9 @@ namespace MG_Platformer_SK.Managers
         public int MapHeight => _tiledMap == null ? 0 : _tiledMap.HeightInPixels;
 
         //--------------------------------------------------
-        // Map to load
+        // First Map
 
-        public int MapToLoad { get; set; }
+        public static int FirstMap = 1;
 
         //--------------------------------------------------
         // Tiles stuff
@@ -68,15 +68,14 @@ namespace MG_Platformer_SK.Managers
         private MapManager()
         {
             TileSize = new Vector2(70, 70);
-            MapToLoad = 1;
             _tileColliderBoxes = new List<Rectangle>();
             _colliderTexture = new Texture2D(SceneManager.Instance.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             _colliderTexture.SetData<Color>(new Color[] { Color.Red });
         }
 
-        public void LoadMap(ContentManager contentManager, int id)
+        public void LoadMap(ContentManager contentManager, int mapId)
         {
-            _tiledMap = contentManager.Load<TiledMap>(String.Format("maps/map{0}", id));
+            _tiledMap = contentManager.Load<TiledMap>(String.Format("maps/map{0}", mapId));
             var blockedLayer = (TiledTileLayer)_tiledMap.GetLayer("Block");
             if (blockedLayer == null) return;
             foreach (var tile in blockedLayer.Tiles)
@@ -86,6 +85,11 @@ namespace MG_Platformer_SK.Managers
                     _tileColliderBoxes.Add(new Rectangle(tile.X * (int)TileSize.X, tile.Y * (int)TileSize.Y, (int)TileSize.X, (int)TileSize.Y));
                 }
             }
+        }
+
+        public void LoadMapWithTransition(int mapId, Action<int> loadCallback)
+        {
+            SceneManager.Instance.MapTransition(mapId, loadCallback);
         }
 
         public int GetTileByX(double x)

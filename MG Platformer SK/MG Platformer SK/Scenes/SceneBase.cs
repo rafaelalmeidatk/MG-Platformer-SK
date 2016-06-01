@@ -48,15 +48,13 @@ namespace MG_Platformer_SK.Scenes
             _fpsCounter.Update(gameTime);
         }
 
-        public void DrawDebugValue(SpriteBatch spriteBatch)
+        public void DrawDebugValues(SpriteBatch spriteBatch)
         {
             if (!SceneManager.Instance.DebugMode) return;
-            spriteBatch.Begin();
             spriteBatch.DrawString(_debugFont, string.Format("FPS: {0}", _fpsCounter.AverageFramesPerSecond), new Vector2(5, 5), Color.Gray);
             var i = 0;
             foreach (KeyValuePair<string, string> value in DebugValues)
-                spriteBatch.DrawString(_debugFont, value.Key + ": " + value.Value, new Vector2(5, 25 + 20 * i++), Color.White);
-            spriteBatch.End();
+                spriteBatch.DrawString(_debugFont, value.Key + ": " + value.Value, new Vector2(5, 25 + 20 * i++), Color.Gray);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, ViewportAdapter viewportAdapter) { }
