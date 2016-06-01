@@ -20,3 +20,32 @@
 /processorParam:TextureFormat=Compressed
 /build:fonts/DebugFont.spritefont
 
+#begin imgs/tilesets/hills.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:imgs/tilesets/hills.png
+
+#begin imgs/tilesets/tile.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:imgs/tilesets/tile.png
+
+#begin maps/map1.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:maps/map1.tmx
+

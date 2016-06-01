@@ -60,7 +60,7 @@ namespace MG_Platformer_SK.Managers
 
         private SceneManager()
         {
-            _currentScene = new SceneBase();
+            _currentScene = new SceneMap();
         }
 
         public void RequestExit()
@@ -94,7 +94,7 @@ namespace MG_Platformer_SK.Managers
         {
             if (_isTransitioning)
                 UpdateTransition(gameTime);
-            else if (InputManager.Instace.KeyPressed(Keys.F5))
+            else if (InputManager.Instace.KeyPressed(Keys.F2))
                 DebugMode = !DebugMode;
 
             _currentScene.Update(gameTime);

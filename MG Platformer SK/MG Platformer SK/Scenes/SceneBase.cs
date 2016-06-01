@@ -13,7 +13,7 @@ using MG_Platformer_SK.Managers;
 
 namespace MG_Platformer_SK.Scenes
 {
-    class SceneBase
+    public abstract class SceneBase
     {
         //--------------------------------------------------
         // Some stuff
