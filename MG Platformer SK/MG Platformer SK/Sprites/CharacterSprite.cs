@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Sprites;
 using MG_Platformer_SK.Managers;
+using System.Diagnostics;
 
 namespace MG_Platformer_SK.Sprites
 {
@@ -58,10 +59,7 @@ namespace MG_Platformer_SK.Sprites
         private Texture2D _colliderRedTexture;
         private Texture2D _colliderYellowTexture;
 
-        public SpriteCollider Collider
-        {
-            get { return GetCurrentFramesList().Collider; }
-        }
+        public SpriteCollider Collider => GetCurrentFramesList().Collider;
 
         //--------------------------------------------------
         // Bouding Box
@@ -119,6 +117,13 @@ namespace MG_Platformer_SK.Sprites
             {
                 _framesList[name].Frames.Add(new FrameInfo(frames[i], offsetX[i], offsetY[i]));
             }
+        }
+
+        public void AddFrames(string name, List<Rectangle> frames)
+        {
+            var offsetX = new int[frames.Count];
+            var offsetY = new int[frames.Count];
+            AddFrames(name, frames, offsetX, offsetY);
         }
 
         public void AddCollider(string name, Rectangle rectangle)

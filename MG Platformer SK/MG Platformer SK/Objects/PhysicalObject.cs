@@ -42,6 +42,7 @@ namespace MG_Platformer_SK.Objects
         protected const float MaxMoveSpeed = 1750.0f;
         protected const float GroundDragFactor = 0.48f;
         protected const float AirDragFactor = 0.58f;
+        protected const float DyingDragFactor = 0.8f;
 
         //--------------------------------------------------
         // Constants for controlling vertical movement
@@ -79,18 +80,12 @@ namespace MG_Platformer_SK.Objects
         // Combat system usage
 
         protected bool _dying;
-        public bool Dying { get { return _dying; } }
+        public bool Dying => _dying;
 
         //--------------------------------------------------
         // Bounding rectangle
 
-        public virtual Rectangle BoundingRectangle
-        {
-            get
-            {
-                return Rectangle.Empty;
-            }
-        }
+        public virtual Rectangle BoundingRectangle => Rectangle.Empty;
 
         //----------------------//------------------------//
 
@@ -124,7 +119,7 @@ namespace MG_Platformer_SK.Objects
 
             // Apply pseudo-drag horizontally.
             if (_dying)
-                _velocity.X *= 0.8f;
+                _velocity.X *= DyingDragFactor;
             else if (IsOnGround)
                 _velocity.X *= GroundDragFactor;
             else

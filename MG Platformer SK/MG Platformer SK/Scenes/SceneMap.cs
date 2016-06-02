@@ -17,7 +17,8 @@ namespace MG_Platformer_SK.Scenes
 
         private Camera2D _camera;
         private const float CameraSmooth = 0.1f;
-        private const int PlayerCameraOffsetX = 40;
+        private const int PlayerCameraOffsetX = 20;
+        private const int PlayerCameraOffsetY = 0;
 
         //--------------------------------------------------
         // Player
@@ -97,7 +98,7 @@ namespace MG_Platformer_SK.Scenes
             var viewport = SceneManager.Instance.ViewportAdapter;
             var newPosition = _player.Position - new Vector2(viewport.VirtualWidth / 2f, viewport.VirtualHeight / 2f);
             var playerOffsetX = PlayerCameraOffsetX + _player.CharacterSprite.GetColliderWidth() / 2;
-            var playerOffsetY = _player.CharacterSprite.GetFrameHeight() / 2;
+            var playerOffsetY = PlayerCameraOffsetY + _player.CharacterSprite.GetFrameHeight() / 2;
             var x = MathHelper.Lerp(_camera.Position.X, newPosition.X + playerOffsetX, CameraSmooth);
             x = MathHelper.Clamp(x, 0.0f, MapManager.Instance.MapWidth - viewport.VirtualWidth);
             var y = MathHelper.Lerp(_camera.Position.Y, newPosition.Y + playerOffsetY, CameraSmooth);

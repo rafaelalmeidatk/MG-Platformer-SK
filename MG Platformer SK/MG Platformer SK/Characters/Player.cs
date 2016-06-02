@@ -32,7 +32,7 @@ namespace MG_Platformer_SK.Characters
             CharacterSprite.AddFrames("stand", new List<Rectangle>()
             {
                 new Rectangle(67, 196, 66, 92)
-            }, new int[] { 0 }, new int[] { 0 });
+            });
 
             // Walking
             CharacterSprite.CreateFrameList("walking", 120);
@@ -50,7 +50,7 @@ namespace MG_Platformer_SK.Characters
                 new Rectangle(219, 98, 72, 97),
                 new Rectangle(365, 0, 72, 97),
                 new Rectangle(292, 98, 72, 97)
-            }, new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            });
 
             // Jumping
             CharacterSprite.CreateFrameList("jumping", 0);
@@ -58,7 +58,7 @@ namespace MG_Platformer_SK.Characters
             CharacterSprite.AddFrames("jumping", new List<Rectangle>()
             {
                 new Rectangle(438, 93, 67, 94)
-            }, new int[] { 0 }, new int[] { 0 });
+            });
 
             Position = new Vector2(32, 160);
 
@@ -90,11 +90,17 @@ namespace MG_Platformer_SK.Characters
                 CharacterSprite.SetFrameList(_attackFrameList[_attackType]);
             }
             else if (!_isOnGround)
+            {
                 CharacterSprite.SetFrameList("jumping");
+            }
             else if ((InputManager.Instace.KeyDown(Keys.Left) || InputManager.Instace.KeyDown(Keys.Right)) && !_keysLocked)
+            {
                 CharacterSprite.SetFrameList("walking");
+            }
             else
+            {
                 CharacterSprite.SetFrameList("stand");
+            }
         }
 
         private void CheckKeys(GameTime gameTime)
@@ -110,9 +116,6 @@ namespace MG_Platformer_SK.Characters
                 CharacterSprite.SetDirection(SpriteDirection.Right);
                 _movement = 1.0f;
             }
-
-            if (InputManager.Instace.KeyPressed(Keys.G))
-                _knockbackAcceleration = 5000f;
 
             _isJumping = InputManager.Instace.KeyDown(Keys.C);
         }
